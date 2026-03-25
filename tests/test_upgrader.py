@@ -1,3 +1,5 @@
+from datetime import date
+
 from secure_update.models import Vulnerability, VulnerablePackage
 from secure_update.upgrader import build_upgrade_args
 
@@ -17,12 +19,15 @@ def test_build_upgrade_args_basic() -> None:
     assert build_upgrade_args([pkg]) == ["--upgrade-package", "urllib3>=2.6.3"]
 
 
-def test_build_upgrade_args_never_includes_exclude_newer() -> None:
-    # --exclude-newer is NOT passed to uv lock (it causes global re-resolution
-    # and breaks existing locked packages newer than the cutoff).
+def test_build_upgrade_args_with_exclude_newer() -> None:
     pkg = _pkg("urllib3", "2.4.0", [("CVE-A", ["2.6.3"])])
-    args = build_upgrade_args([pkg])
-    assert "--exclude-newer" not in args
+    args = build_upgrade_args([pkg], exclude_newer=date(2026, 3, 18))
+    assert args == [
+        "--upgrade-package",
+        "urllib3>=2.6.3",
+        "--exclude-newer",
+        "2026-03-18",
+    ]
 
 
 def test_build_upgrade_args_multiple_packages() -> None:
@@ -50,5 +55,5 @@ def test_build_upgrade_args_empty_input() -> None:
 
 def test_build_upgrade_args_no_exclude_newer() -> None:
     pkg = _pkg("flask", "3.0.0", [("CVE-F", ["3.1.0"])])
-    args = build_upgrade_args([pkg])
+    args = build_upgrade_args([pkg], exclude_newer=None)
     assert "--exclude-newer" not in args
