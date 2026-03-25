@@ -33,7 +33,7 @@ FIXTURE_JSON: dict[str, Any] = {
     ]
 }
 
-FIXTURE_LOCK = Path(__file__).parent / "uv.lock"
+FIXTURE_LOCK = Path(__file__).parent / "fixtures" / "m3l" / "uv.lock"
 
 
 def test_parse_vulnerabilities_returns_only_vulnerable() -> None:
@@ -61,10 +61,10 @@ def test_parse_vulnerabilities_missing_files_key() -> None:
     assert parse_vulnerabilities({}) == []
 
 
-def test_parse_lock_versions_finds_urllib3() -> None:
+def test_parse_lock_versions_finds_diskcache() -> None:
     versions = parse_lock_versions(FIXTURE_LOCK)
-    assert "urllib3" in versions
-    assert versions["urllib3"] == "2.4.0"
+    assert "diskcache" in versions
+    assert versions["diskcache"] == "5.6.3"
 
 
 def test_parse_lock_versions_returns_dict_of_strings() -> None:
