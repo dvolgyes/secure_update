@@ -215,6 +215,7 @@ source = { editable = "." }
 dependencies = [
     { name = "click" },
     { name = "loguru" },
+    { name = "packaging" },
     { name = "tqdm" },
 ]
 
@@ -230,6 +231,7 @@ dev = [
 requires-dist = [
     { name = "click", specifier = ">=8.3.1" },
     { name = "loguru", specifier = ">=0.7.3" },
+    { name = "packaging", specifier = ">=24.0" },
     { name = "tqdm", specifier = ">=4.67.3" },
 ]
 

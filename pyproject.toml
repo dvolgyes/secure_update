@@ -10,8 +10,12 @@ requires-python = ">=3.12"
 dependencies = [
     "click>=8.3.1",
     "loguru>=0.7.3",
+    "packaging>=24.0",
     "tqdm>=4.67.3",
 ]
+
+[project.scripts]
+secure-update = "secure_update.cli:main"
 
 [build-system]
 requires = ["uv_build>=0.10.4,<0.11.0"]
