@@ -1,5 +1,7 @@
 # secure-update
 
+[![CI](https://github.com/dvolgyes/secure_update/actions/workflows/ci.yml/badge.svg)](https://github.com/dvolgyes/secure_update/actions/workflows/ci.yml)
+
 Automated security upgrade tool for `uv`-managed Python projects.
 
 `secure-update` scans directories for `uv.lock` files, audits them for known
