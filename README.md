@@ -141,9 +141,19 @@ was published before the cutoff date.
 ### Installation
 
 ```bash
+# Install from PyPI
 uv tool install secure-update
-# or run without installing:
+
+# Run without installing (PyPI)
 uvx secure-update
+
+# Run directly from GitHub (no PyPI release needed)
+uvx --from git+https://github.com/dvolgyes/secure_update secure-update
+
+# Pin to a specific branch, tag, or commit
+uvx --from "git+https://github.com/dvolgyes/secure_update@main" secure-update
+uvx --from "git+https://github.com/dvolgyes/secure_update@v1.2.0" secure-update
+uvx --from "git+https://github.com/dvolgyes/secure_update@a1b2c3d" secure-update
 ```
 
 ### Usage
