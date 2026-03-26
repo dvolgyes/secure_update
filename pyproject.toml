@@ -1,8 +1,9 @@
 [project]
 name = "secure-update"
 version = "0.1.0"
-description = "Add your description here"
+description = "Automated security upgrade tool for uv-managed Python projects"
 readme = "README.md"
+license = { file = "LICENSE" }
 authors = [
     { name = "David Völgyes", email = "david.volgyes@ieee.org" }
 ]
