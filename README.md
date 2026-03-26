@@ -84,20 +84,35 @@ uv lock --upgrade-package urllib3  # upgrades to the absolute latest — may be 
 
 ### The safe pattern
 
-Combine `--upgrade-package` with a version floor and `--exclude-newer`:
+Combine `--upgrade-package` with a version floor and `--exclude-newer`.
+Use shell command substitution to compute the cutoff date dynamically — no
+hardcoded dates in scripts:
 
 ```bash
 # Upgrade only urllib3, to at least 2.6.3, but not to anything published
 # in the last 7 days
 uv lock \
   --upgrade-package "urllib3>=2.6.3" \
-  --exclude-newer 2026-03-18
+  --exclude-newer $(date --utc -d "7 days ago" "+%Y-%m-%dT%H:%M:%SZ")
 
 # Multiple vulnerable packages at once
 uv lock \
   --upgrade-package "urllib3>=2.6.3" \
   --upgrade-package "aiohttp>=3.10.11" \
-  --exclude-newer 2026-03-18
+  --exclude-newer $(date --utc -d "7 days ago" "+%Y-%m-%dT%H:%M:%SZ")
+
+# Other relative expressions accepted by GNU date
+--exclude-newer $(date --utc -d "2 weeks ago"  "+%Y-%m-%dT%H:%M:%SZ")
+--exclude-newer $(date --utc -d "1 month ago"  "+%Y-%m-%dT%H:%M:%SZ")
+--exclude-newer $(date --utc -d "3 months ago" "+%Y-%m-%dT%H:%M:%SZ")
+```
+
+On macOS (BSD date), the syntax differs:
+
+```bash
+--exclude-newer $(date -u -v-7d "+%Y-%m-%dT%H:%M:%SZ")   # 7 days ago
+--exclude-newer $(date -u -v-2w "+%Y-%m-%dT%H:%M:%SZ")   # 2 weeks ago
+--exclude-newer $(date -u -v-1m "+%Y-%m-%dT%H:%M:%SZ")   # 1 month ago
 ```
 
 `--upgrade-package` upgrades only the named package (and its transitive
@@ -112,7 +127,8 @@ remain unchanged.
 When adding a new dependency, the same flag applies:
 
 ```bash
-uv add "requests>=2.32.3" --exclude-newer 2026-03-18
+uv add "requests>=2.32.3" \
+  --exclude-newer $(date --utc -d "7 days ago" "+%Y-%m-%dT%H:%M:%SZ")
 ```
 
 This ensures the newly resolved version of `requests` (and all its dependencies)
